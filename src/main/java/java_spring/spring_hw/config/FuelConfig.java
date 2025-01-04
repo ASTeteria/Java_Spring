@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Data
 @Configuration
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "fuel-types")
 public class FuelConfig {
     private Map<String, List<String>> fuelTypes;
 }
