@@ -11,7 +11,7 @@ databaseChangeLog:
                   type: "bigint"
                   constraints:
                     primaryKey: true
-                  defaultValueSequenceNext: "cars"
+
               - column:
                   name: "model"
                   type: "text"
