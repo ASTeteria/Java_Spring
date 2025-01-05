@@ -7,58 +7,59 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/cars")
 @RequiredArgsConstructor
 public class CarController {
+
     private final CarRepository carRepository;
 
-    @PostMapping
+
+    @PostMapping("/cars")
     public Car createCar(@RequestBody Car car) {
         return carRepository.save(car);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/cars/{id}")
     public ResponseEntity<Car> getCar(@PathVariable Long id) {
         return ResponseEntity.of(carRepository.findById(id));
     }
 
-    @GetMapping(produces = "application/json")
-    public Iterable<Car> getCars(
+    @GetMapping(value = "/cars", produces = "application/json")
+    public List<Car> getCars(
             @RequestParam(name = "minEnginePower", required = false) Integer minEnginePower,
             @RequestParam(name = "maxEnginePower", required = false) Integer maxEnginePower
     ) {
         if (minEnginePower != null && maxEnginePower != null) {
             return carRepository.findAllByEnginePowerBetween(minEnginePower, maxEnginePower);
-
-        }
-        else if (minEnginePower != null) {
+        } else if (minEnginePower != null) {
             return carRepository.findAllByEnginePowerGreaterThan(minEnginePower);
-        }
-        else if (maxEnginePower != null) {
+        } else if (maxEnginePower != null) {
             return carRepository.findAllByEnginePowerLessThan(maxEnginePower);
-        }
-        else {
+        } else {
             return carRepository.findAll();
         }
-
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/cars/{id}")
     public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
-        return carRepository.findById(id)
-                .map(existingCar -> {
-                    existingCar.setEnginePower(car.getEnginePower());
-                    existingCar.setModel(car.getModel());
-                    existingCar.setTorque(car.getTorque());
-                    carRepository.save(existingCar);
-                    return ResponseEntity.ok(existingCar);
-
-                })
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Car> existingCar = carRepository.findById(id);
+        if (existingCar.isPresent()) {
+            Car updatedCar = existingCar.get();
+            updatedCar.setModel(car.getModel());
+            updatedCar.setEnginePower(car.getEnginePower());
+            updatedCar.setTorque(car.getTorque());
+            carRepository.save(updatedCar);
+            return ResponseEntity.ok(updatedCar);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("/{id}")
+
+    @DeleteMapping("/cars/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         if (carRepository.existsById(id)) {
             carRepository.deleteById(id);
