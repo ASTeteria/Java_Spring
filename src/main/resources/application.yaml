@@ -9,6 +9,8 @@ spring:
     password: 19823366
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
     jpa:
       hibernate:
         ddl-auto: none
