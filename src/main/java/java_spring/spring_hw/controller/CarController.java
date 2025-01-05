@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/cars")
 @RequiredArgsConstructor
@@ -26,22 +24,22 @@ public class CarController {
     }
 
     @GetMapping(produces = "application/json")
-    public List<Car> getCars(
+    public Iterable<Car> getCars(
             @RequestParam(name = "minEnginePower", required = false) Integer minEnginePower,
             @RequestParam(name = "maxEnginePower", required = false) Integer maxEnginePower
     ) {
         if (minEnginePower != null && maxEnginePower != null) {
-            return carRepository.findByEnginePowerBetween(minEnginePower, maxEnginePower);
+            return carRepository.findAllByEnginePowerBetween(minEnginePower, maxEnginePower);
 
         }
         else if (minEnginePower != null) {
-            return carRepository.findByEnginePowerBetween(minEnginePower, minEnginePower);
+            return carRepository.findAllByEnginePowerGreaterThan(minEnginePower);
         }
         else if (maxEnginePower != null) {
-            return carRepository.findByEnginePowerBetween(0, maxEnginePower);
+            return carRepository.findAllByEnginePowerLessThan(maxEnginePower);
         }
         else {
-            return (List<Car>) carRepository.findAll();
+            return carRepository.findAll();
         }
 
     }
