@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.1
+      author: Artem
+      changes:
+        - createSequence:
+            sequenceName: "cars"
+        - createTable:
+            tableName: "car"
+            columns:
+              - column:
+                  name: "id"
+                  type: "bigint"
+                  constraints:
+                    primaryKey: true
+                  defaultValueSequenceNext: "cars"
+              - column:
+                  name: "model"
+                  type: "text"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: "engine_power"
+                  type: "numeric"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "torque"
+                  type: "numeric"
+
