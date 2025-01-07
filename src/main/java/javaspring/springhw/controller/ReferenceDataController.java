@@ -1,6 +1,6 @@
-package java_spring.spring_hw.controller;
+package javaspring.springhw.controller;
 
-import java_spring.spring_hw.config.FuelConfig;
+import javaspring.springhw.config.FuelConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
