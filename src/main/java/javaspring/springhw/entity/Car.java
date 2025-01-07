@@ -1,4 +1,4 @@
-package java_spring.spring_hw.entity;
+package javaspring.springhw.entity;
 
 
 import jakarta.persistence.*;

@@ -1,9 +1,9 @@
-package java_spring.spring_hw.controller;
+package javaspring.springhw.controller;
 
 
-import java_spring.spring_hw.entity.Car;
+import javaspring.springhw.entity.Car;
 
-import java_spring.spring_hw.repository.CarRepository;
+import javaspring.springhw.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

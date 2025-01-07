@@ -1,7 +1,7 @@
-package java_spring.spring_hw.repository;
+package javaspring.springhw.repository;
 
 
-import java_spring.spring_hw.entity.Car;
+import javaspring.springhw.entity.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

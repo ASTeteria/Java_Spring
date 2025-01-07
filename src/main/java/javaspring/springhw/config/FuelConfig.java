@@ -1,4 +1,4 @@
-package java_spring.spring_hw.config;
+package javaspring.springhw.config;
 
 
 import lombok.Data;
