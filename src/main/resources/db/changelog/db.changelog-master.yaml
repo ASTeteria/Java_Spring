@@ -14,13 +14,13 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: "username"
-                  type: "text"
+                  type: "varchar(255)"
                   constraints:
                     nullable: false
                     unique: true
               - column:
                   name: "email"
-                  type: "text"
+                  type: "varchar(255)"
                   constraints:
                     nullable: false
 
@@ -39,7 +39,7 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: "model"
-                  type: "text"
+                  type: "varchar(255)"
                   constraints:
                     nullable: false
               - column:
