@@ -1,15 +1,20 @@
 package javaspring.springhw.service;
 
+
 import jakarta.transaction.Transactional;
 import javaspring.springhw.dto.CarDto;
 import javaspring.springhw.dto.CreateCarDto;
 import javaspring.springhw.entity.Car;
+import javaspring.springhw.entity.Owner;
 import javaspring.springhw.mapper.CarMapper;
 import javaspring.springhw.repository.CarRepository;
+import javaspring.springhw.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,8 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+    private final OwnerRepository ownerRepository;
+    private final MailService mailService;
 
     public List<CarDto> getCars(Integer minEnginePower, Integer maxEnginePower) {
         List<Car> cars;
@@ -38,7 +45,12 @@ public class CarService {
 
     @Transactional
     public CarDto createCar(CreateCarDto createCarDto) {
+        Owner owner = ownerRepository.findByUsername(createCarDto.ownerUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Owner not found with username: " + createCarDto.ownerUsername()));
+
         Car car = carMapper.toEntity(createCarDto);
+        car.setOwner(owner);
+        car.setLastMaintenanceTimestamp(LocalDateTime.now());
         return carMapper.toDto(carRepository.save(car));
     }
 

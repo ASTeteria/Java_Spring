@@ -8,5 +8,7 @@ public record CreateCarDto(
         String model,
         @Min(value = 1, message = "Engine power must be greater than 0")
         Integer enginePower,
-        Integer torque
+        Integer torque,
+        @NotBlank(message = "Owner username cannot be blank")
+        String ownerUsername
 ) {}

@@ -7,5 +7,7 @@ public record CarDto(
         Long id,
         String model,
         Integer enginePower,
-        Integer torque
+        Integer torque,
+        String ownerUsername,
+        String lastMaintenanceTimestamp
 ) {}

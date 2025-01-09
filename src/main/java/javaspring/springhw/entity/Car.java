@@ -1,25 +1,28 @@
 package javaspring.springhw.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Data
 @Table(name = "car")
+@Data
 public class Car {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "model", nullable = false, length = 50)
     private String model;
 
-    @Column(name = "engine_power", nullable = false)
     private Integer enginePower;
 
-    @Column(name = "torque", nullable = false)
     private Integer torque;
 
+    private LocalDateTime lastMaintenanceTimestamp;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
 }

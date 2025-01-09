@@ -1,33 +1,61 @@
 databaseChangeLog:
-- changeSet:
-    id: 1.0.1
-    author: Artem
-    changes:
-      - createTable:
-          tableName: "car"
-          columns:
-            - column:
-                name: "id"
-                type: "bigint"
-                autoIncrement: true
-                constraints:
-                  primaryKey: true
+  - changeSet:
+      id: 1
+      author: Artem
+      changes:
+        - createTable:
+            tableName: "owner"
+            columns:
+              - column:
+                  name: "id"
+                  type: "bigint"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: "username"
+                  type: "text"
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: "email"
+                  type: "text"
+                  constraints:
+                    nullable: false
 
-            - column:
-                name: "model"
-                type: "text"
-                constraints:
-                  nullable: false
-
-            - column:
-                name: "engine_power"
-                type: "numeric"
-                constraints:
-                  nullable: false
-            - column:
-                name: "torque"
-                type: "numeric"
-
-            - column:
-                name: "fuel_type"
-                type: "text"
+  - changeSet:
+      id: 2
+      author: Artem
+      changes:
+        - createTable:
+            tableName: "car"
+            columns:
+              - column:
+                  name: "id"
+                  type: "bigint"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: "model"
+                  type: "text"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "engine_power"
+                  type: "numeric"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "torque"
+                  type: "numeric"
+              - column:
+                  name: "last_maintenance_timestamp"
+                  type: "timestamp"
+              - column:
+                  name: "owner_id"
+                  type: "bigint"
+                  constraints:
+                    nullable: false
+       
