@@ -1,27 +1,22 @@
 package javaspring.springhw.mapper;
 
+
 import javaspring.springhw.dto.CarDto;
-import javaspring.springhw.dto.CreateCarDto;
 import javaspring.springhw.entity.Car;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class CarMapper {
+import java.time.LocalDateTime;
 
-    public CarDto toDto(Car car) {
-        return CarDto.builder()
-                .id(car.getId())
-                .model(car.getModel())
-                .enginePower(car.getEnginePower())
-                .torque(car.getTorque())
-                .build();
-    }
+@Mapper(componentModel = "spring", imports = LocalDateTime.class)
+public interface CarMapper {
 
-    public Car toEntity(CreateCarDto createCarDto) {
-        Car car = new Car();
-        car.setModel(createCarDto.model());
-        car.setEnginePower(createCarDto.enginePower());
-        car.setTorque(createCarDto.torque());
-        return car;
-    }
+    @Mapping(target = "ownerUsername", source = "owner.username")
+    @Mapping(target = "lastMaintenanceTimestamp", expression = "java(LocalDateTime.now())")
+    CarDto toDto(Car car);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "lastMaintenanceTimestamp", expression = "java(null)")
+    Car toEntity(CarDto carDto);
 }

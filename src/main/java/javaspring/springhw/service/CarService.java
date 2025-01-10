@@ -3,7 +3,6 @@ package javaspring.springhw.service;
 
 import jakarta.transaction.Transactional;
 import javaspring.springhw.dto.CarDto;
-import javaspring.springhw.dto.CreateCarDto;
 import javaspring.springhw.entity.Car;
 import javaspring.springhw.entity.Owner;
 import javaspring.springhw.mapper.CarMapper;
@@ -12,70 +11,67 @@ import javaspring.springhw.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
 public class CarService {
 
     private final CarRepository carRepository;
-    private final CarMapper carMapper;
     private final OwnerRepository ownerRepository;
-    private final MailService mailService;
+    private final CarMapper carMapper;
 
-    public List<CarDto> getCars(Integer minEnginePower, Integer maxEnginePower) {
-        List<Car> cars;
 
-        if (minEnginePower != null && maxEnginePower != null) {
-            cars = carRepository.findAllByEnginePowerBetween(minEnginePower, maxEnginePower);
-        } else if (minEnginePower != null) {
-            cars = carRepository.findAllByEnginePowerGreaterThan(minEnginePower);
-        } else if (maxEnginePower != null) {
-            cars = carRepository.findAllByEnginePowerLessThan(maxEnginePower);
-        } else {
-            cars = carRepository.findAll();
-        }
+    @Transactional
+    public CarDto createCar(CarDto carDto) {
+        Owner owner = ownerRepository.findByUsername(carDto.ownerUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Owner with username " + carDto.ownerUsername() + " not found"));
 
-        return cars.stream()
+        Car car = carMapper.toEntity(carDto);
+        car.setOwner(owner);
+
+        Car savedCar = carRepository.save(car);
+        return carMapper.toDto(savedCar);
+    }
+
+
+    public List<CarDto> getAllCars() {
+        return carRepository.findAll()
+                .stream()
                 .map(carMapper::toDto)
                 .toList();
     }
 
-    @Transactional
-    public CarDto createCar(CreateCarDto createCarDto) {
-        Owner owner = ownerRepository.findByUsername(createCarDto.ownerUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Owner not found with username: " + createCarDto.ownerUsername()));
-
-        Car car = carMapper.toEntity(createCarDto);
-        car.setOwner(owner);
-        car.setLastMaintenanceTimestamp(LocalDateTime.now());
-        return carMapper.toDto(carRepository.save(car));
-    }
 
     public CarDto getCarById(Long id) {
-        Car car = carRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Car not found with ID: " + id));
-        return carMapper.toDto(car);
+        return carRepository.findById(id)
+                .map(carMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Car with ID " + id + " not found"));
     }
+
 
     @Transactional
-    public CarDto updateCar(Long id, CreateCarDto createCarDto) {
+    public CarDto updateCar(Long id, CarDto carDto) {
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Car not found with ID: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Car with ID " + id + " not found"));
 
-        car.setModel(createCarDto.model());
-        car.setEnginePower(createCarDto.enginePower());
-        car.setTorque(createCarDto.torque());
+        Owner owner = ownerRepository.findByUsername(carDto.ownerUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Owner with username " + carDto.ownerUsername() + " not found"));
 
-        return carMapper.toDto(carRepository.save(car));
+        car.setModel(carDto.model());
+        car.setEnginePower(carDto.enginePower());
+        car.setTorque(carDto.torque());
+        car.setOwner(owner);
+
+        Car updatedCar = carRepository.save(car);
+        return carMapper.toDto(updatedCar);
     }
+
 
     @Transactional
     public void deleteCar(Long id) {
         if (!carRepository.existsById(id)) {
-            throw new IllegalArgumentException("Car not found with ID: " + id);
+            throw new IllegalArgumentException("Car with ID " + id + " not found");
         }
         carRepository.deleteById(id);
     }

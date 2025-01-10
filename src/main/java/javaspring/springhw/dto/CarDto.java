@@ -2,6 +2,8 @@ package javaspring.springhw.dto;
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record CarDto(
         Long id,
@@ -9,5 +11,5 @@ public record CarDto(
         Integer enginePower,
         Integer torque,
         String ownerUsername,
-        String lastMaintenanceTimestamp
+        LocalDateTime lastMaintenanceTimestamp
 ) {}
