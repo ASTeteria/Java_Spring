@@ -19,14 +19,14 @@ spring:
 
   data:
     mongodb:
-      uri: "mongodb+srv://Amter:19823366@cluster0.lc35h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      uri: "${mongodb.uri}"
       database: "Maintenances"
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: pvwushu@gmail.com
-    password: trdk lsgt cfuw zsem
+    username: ${email}
+    password: ${email-password}
     properties:
       mail:
         smtp:
