@@ -1,61 +1,92 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
-      author: Artem
-      changes:
-        - createTable:
-            tableName: "owner"
-            columns:
-              - column:
-                  name: "id"
-                  type: "bigint"
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-              - column:
-                  name: "username"
-                  type: "varchar(255)"
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: "email"
-                  type: "varchar(255)"
-                  constraints:
-                    nullable: false
+    id: 1
+    author: Artem
+    changes:
+      - createTable:
+          tableName: car
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: model
+                type: VARCHAR(255)
+            - column:
+                name: engine_power
+                type: INT
+            - column:
+                name: torque
+                type: INT
+            - column:
+                name: user_id
+                type: BIGINT
+            - column:
+                name: last_maintenance_timestamp
+                type: TIMESTAMP
+      - createTable:
+          tableName: owner
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: username
+                type: VARCHAR(255)
+                constraints:
+                  unique: true
+            - column:
+                name: email
+                type: VARCHAR(255)
+                constraints:
+                  unique: true
+            - column:
+                name: password
+                type: VARCHAR(255)
+            - column:
+                name: role
+                type: VARCHAR(50)
+      - addForeignKeyConstraint:
+          baseTableName: car
+          baseColumnNames: user_id
+          referencedTableName: owner
+          referencedColumnNames: id
 
   - changeSet:
       id: 2
       author: Artem
+      preConditions:
+        onFail: CONTINUE
+        onError: HALT
       changes:
-        - createTable:
-            tableName: "car"
+        - sql:
+            sql: DELETE FROM car
+        - sql:
+            sql: DELETE FROM owner
+        - renameTable:
+            oldTableName: owner
+            newTableName: user
+        - renameColumn:
+            tableName: car
+            oldColumnName: user_id
+            newColumnName: owner_id
+
+  - changeSet:
+      id: 3
+      author: system
+      changes:
+        - addColumn:
+            tableName: user
             columns:
               - column:
-                  name: "id"
-                  type: "bigint"
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
+                  name: password
+                  type: VARCHAR(255)
               - column:
-                  name: "model"
-                  type: "varchar(255)"
-                  constraints:
-                    nullable: false
-              - column:
-                  name: "engine_power"
-                  type: "numeric"
-                  constraints:
-                    nullable: false
-              - column:
-                  name: "torque"
-                  type: "numeric"
-              - column:
-                  name: "last_maintenance_timestamp"
-                  type: "timestamp"
-              - column:
-                  name: "owner_id"
-                  type: "bigint"
-                  constraints:
-                    nullable: false
-       
+                  name: role
+                  type: VARCHAR(50)
