@@ -1,15 +1,5 @@
 databaseChangeLog:
   - changeSet:
-      id: 0
-      author: car_service
-      changes:
-        # Очищення SQL таблиць
-        - delete:
-            tableName: cars
-        - delete:
-            tableName: users
-
-  - changeSet:
       id: 1
       author: car_service
       changes:
