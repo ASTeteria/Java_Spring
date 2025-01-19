@@ -33,3 +33,10 @@ spring:
           auth: true
           starttls:
           enable: true
+
+jwt:
+  secret: superSecretJwtKeyForApp
+  access-token:
+    ttl-millis: 40000000
+  refresh-token:
+    ttl-millis: 6048000000000
