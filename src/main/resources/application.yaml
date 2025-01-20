@@ -19,14 +19,14 @@ spring:
 
   data:
     mongodb:
-      uri: "${mongodb.uri}"
+      uri: "mongodb+srv://Amter:19823366@cluster0.lc35h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
       database: "Maintenances"
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${email}
-    password: ${email-password}
+    username: teteryawushu@gmail.com
+    password: trdk lsgt cfuw
     properties:
       mail:
         smtp:
@@ -35,7 +35,7 @@ spring:
           enable: true
 
 jwt:
-  secret: superSecretJwtKeyForApp
+  secret: superSecretJwtKeyForAppDFJFURUIYLHjhfahsgjhliayJHFJFHGKJYTeUTXYiLHZLKXhY
   access-token:
     ttl-millis: 40000000
   refresh-token:
