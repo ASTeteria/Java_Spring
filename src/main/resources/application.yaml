@@ -3,3 +3,40 @@ spring:
     name: CarAApplication
   profiles:
     active: dev
+  datasource:
+    url: "jdbc:mysql://localhost:3306/CarService"
+    username: "ASTeteria"
+    password: "19823366"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    mongodb:
+      uri: "mongodb+srv://Amter:19823366@cluster0.lc35h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      database: "Maintenances"
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: teteryawushu@gmail.com
+    password: trdk lsgt cfuw
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+          enable: true
+
+jwt:
+  secret: superSecretJwtKeyForAppDFJFURUIYLHjhfahsgjhliayJHFJFHGKJYTeUTXYiLHZLKXhY
+  access-token:
+    ttl-millis: 40000000
+  refresh-token:
+    ttl-millis: 6048000000000
